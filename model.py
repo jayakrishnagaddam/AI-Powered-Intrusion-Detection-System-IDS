@@ -8,7 +8,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropou
 from tensorflow.keras.optimizers import Adam
 
 # Load the dataset
-file_path = 'CIC Dataset/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv'
+file_path = 'CIC Dataset\Friday-WorkingHours-Morning.pcap_ISCX.csv'
 df = pd.read_csv(file_path)
 
 # Strip whitespace from column names
@@ -55,13 +55,13 @@ X_train, X_test, y_train, y_test = train_test_split(X_reshaped, y_categorical, t
 
 # Build the Conv2D model
 model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(height, width, 1)))
+model.add(Conv2D(32, kernel_size=(1, 1), activation='relu', input_shape=(height, width, 1)))
 model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size=(2, 2)))  # Reduces size to (3, 6, 32)
+model.add(MaxPooling2D(pool_size=(1, 1)))  # Reduces size to (3, 6, 32)
 
-model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
+model.add(Conv2D(64, kernel_size=(1, 1), activation='relu'))
 model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size=(2, 2)))  # Reduces size to (1, 3, 64)
+model.add(MaxPooling2D(pool_size=(1, 1)))  # Reduces size to (1, 3, 64)
 
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
@@ -74,7 +74,7 @@ model.add(Dense(2, activation='softmax'))
 model.compile(optimizer=Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model
-history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.1)
+history = model.fit(X_train, y_train, epochs=2, batch_size=32, validation_split=0.1)
 
 # Evaluate the model
 test_loss, test_acc = model.evaluate(X_test, y_test)
